@@ -1,0 +1,34 @@
+{
+  "name" : "百度音乐下载助手",
+  "version" : "1.0.0.0",
+  "manifest_version" : 2,
+  "description" : "突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐",
+  "background" : {
+    "scripts" : ["js/background.js"]
+  },
+  "options_page" : "html/options.html",
+  "homepage_url" : "http://git.oschina.net/youyifentian/",
+  "update_url": "http://duoluohua.com/myapp/chrome/baidumusic/download/",
+  "permissions" : [
+    "management", "tabs", "http://*.baidu.com/*", "https://*.baidu.com/*", "https://ssl.google-analytics.com/*"
+  ],
+  "content_scripts" : [
+    {
+      "matches" : [
+        "http://music.baidu.com/song/*",
+        "http://ting.baidu.com/song/*",
+        "https://ting.baidu.com/song/*",
+        "https://music.baidu.com/song/*"
+      ],
+      "js" : ["js/musicdownload.js"],
+      "run_at" : "document_end"
+    }
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "icons" : {
+    "16" : "images/icon_19.png",
+    "48" : "images/icon_48.png",
+    "128" : "images/icon_128.png"
+  }
+}
+
