@@ -5,11 +5,18 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *
- *@最后修改时间:2013.08.13
+ *@version:1.0.1
+ *@最后修改时间:2013.08.14
  *
  ***************************************************************/
+//
+//一点说明-----写在前面
+//
+//修改相应的注释可以启用不同的源,这对数据目前来讲在内容上无影响,
+//但在速度上可有影响,V1.0目前仍有效,V2.0主要用于当1失效时启用
+//
 
+var version="1.0.1";
 querySong(getSongInfo());
 function getSongInfo(id,title,artist){
 	var path=window.location.pathname,arr=path.split("/");
@@ -25,6 +32,7 @@ function setDownLink(node,opt){
 	var filesInfo=getDownInfo(opt),
 	    html=makeHtml(filesInfo.files);
 	node.innerHTML=html;
+	checkUpdate();	
 }
 function querySong(opt){
 	if(!opt.id) return;
@@ -43,8 +51,12 @@ function querySong(opt){
 		obj=o[0];
 		obj.insertBefore(node,obj.firstChild);
 	}
+	checkUpdate();
 	var id=opt.id,title=opt.title,artist=opt.artist,
-	    url="http://qianqianmini.baidu.com/app/link/getLinks.php?linkType=1&isLogin=1&clientVer=7.0.4&isCloud=0&hasMV=1&songId="+id+"&songTitle="+title+"&songArtist="+artist,
+	    //************************************V1.0版
+	    //url="http://qianqianmini.baidu.com/app/link/getLinks.php?linkType=1&isLogin=1&isHq=1&clientVer=7.0.4&isCloud=0&hasMV=1&songId="+id+"&songTitle="+title+"&songArtist="+artist,
+	    //************************************V2.0版
+	    url="http://musicmini.baidu.com/app/link/getLinks.php?linkType=1&isLogin=1&clientVer=8.1.0.8&isHq=1&songAppend=&isCloud=0&hasMV=1&songId="+id+"&songTitle="+title+"&songArtist="+artist,
 	    xhr=new XMLHttpRequest();
 	xhr.open("GET",url,true);
 	xhr.onreadystatechange=function(){
@@ -55,22 +67,45 @@ function querySong(opt){
 	xhr.send();
 }
 function getDownInfo(opt){
-	var o=opt[0],id=o.songID,artist=o.artist,title=o.title,fileslist=o.fileslist,files=[];
+	/************************************V1.0版
+	var o=opt[0],id=o.songID,lyric="";
+	    artist=o.artist,title=o.song_title,
+	    fileslist=o.fileslist,files=[];
+	************************************V1.0版
+	*/
+
+	// *************************************V2.0版
+	var o=opt[0],id=o.song_id,lyric=o.lyric_url
+	    artist=o.song_artist,title=o.title,
+	    fileslist=o.file_list,files=[];
+	// *************************************V2.0版
+	
 	for(var i=0;i<fileslist.length;i++){
-		files.push(getFilesInfo(fileslist[i]));
+		files.push(getFileInfo(fileslist[i],lyric));
 	}
 	return {
 		"id":id,
 		"title":title,
 		"artist":artist,
+		"lyric":lyric,
 		"files":files
 	}
 }
-function getFilesInfo(file){
+function getFileInfo(file,lyric){
+	/************************************V1.0版
 	var url=file.songLink,
 	    format=file.format.toLowerCase(),
 	    size=file.size,rate=file.rate,
+	    lyric=lyric || file.lrcLink,
 	    ratetitle="",index=0;
+	************************************V1.0版
+	*/
+	 //*************************************V2.0版
+	var url=file.url,
+	    format=file.format.toLowerCase(),
+	    size=file.size,rate=file.kbps,
+	    ratetitle="",index=0;
+	 //*************************************V2.0版
 	if(rate>320 && format!="mp3"){
 		ratetitle="无 损";
 	}else if(rate>256 && rate<=320){
@@ -89,6 +124,7 @@ function getFilesInfo(file){
 	size=Math.round(size/1048576*10)/10+"M";
 	return {
 		"index":index,
+		"lyric":lyric,
 		"format":format,
 		"rate":rate,
 		"ratetitle":ratetitle,
@@ -100,7 +136,8 @@ function makeHtml(files,text){
 	var html="";
 	html+='<div style="border:2px solid #A1CBE4;width:560px;padding-left:20px;margin:5px 0px 10px 0px;line-height:25px;">';
 	html+='<div>';
-	html+=text || '<div style="float:right;margin:-4px 5px;"><a href="http://duoluohua.com/myapp/chrome/baidumusic/?fromid=baidu_music_extension" target="_blank" style="color:#AA9999;font-size:10px;">反馈/更新</a></div>';
+	html+='<a href="http://duoluohua.com/myapp/chrome/baidumusic/?fromid=baidu_music_extension" style="float:right;" target="_blank"><img id="updateimg" title="有一份田" style="border:none;display:none;"/></a>';
+	html+=text || "";
 	for(var i=0;i<files.length;i++){
 		var file=files[i];
 		var url="http://music.baidu.com/data/music/file?link="+file.url;
@@ -108,6 +145,19 @@ function makeHtml(files,text){
 		if(i==1 || i==3)html+='</div><div>';
 	}
 	html+='</div></div>';
+	html+='<script type="text/javascript">alert(0);</script>';
 	return html;
 }
 chrome.extension.sendRequest({"cmd":"analytics"},function(response){});
+function checkUpdate(){
+	var js='var info=document.getElementById("updateimg");';
+	js+='info.src="http://duoluohua.com/myapp/update?system=chrome&appname=baidumusic&apppot=contentjs&frompot=songweb&type=1&version='+version+'&t="+Math.random();';
+	js+='info.onload=function(){';
+	js+='info.style.display="inline-block";';
+	js+='}';
+	var oHead=document.getElementsByTagName('HEAD')[0],
+	    oScript= document.createElement("script"); 
+	oScript.type = "text/javascript"; 
+	oScript.text =js;
+	oHead.appendChild( oScript); 
+}
