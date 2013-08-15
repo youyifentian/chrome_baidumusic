@@ -6,16 +6,16 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *
- *@最后修改时间:2013.08.14
+ *@最后修改时间:2013.08.15
  *
  ***************************************************************/
+
 chrome.runtime.onInstalled.addListener(function(ExtensionInfo) {
-	googleAnalytics();
+	_gaq.push(['_trackEvent','install',String(new Date().getTime())]);
 	localStorage["version"]="1.0.1";
 });
 function onRequest(request, sender, sendResponse){
 	var cmd=request.cmd;
-	googleAnalytics();
 	if("analytics"==cmd){
 		_gaq.push(['_trackEvent','querysongs',String(new Date().getTime())]);
 	}else if("options"==cmd){
@@ -31,6 +31,6 @@ function googleAnalytics(){
 	var ga = document.createElement('script');ga.type = 'text/javascript';
 	ga.async = true;ga.src = 'https://ssl.google-analytics.com/ga.js';
 	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(ga, s)
+	s.parentNode.insertBefore(ga, s);
 }
-
+googleAnalytics();
