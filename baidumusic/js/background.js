@@ -6,7 +6,7 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *
- *@最后修改时间:2013.08.15
+ *@最后修改时间:2013.08.16
  *
  ***************************************************************/
 
@@ -26,7 +26,6 @@ function onRequest(request, sender, sendResponse){
 chrome.extension.onRequest.addListener(onRequest);
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-43134902-1']);
-_gaq.push(['_trackPageview']);
 function googleAnalytics(){
 	var ga = document.createElement('script');ga.type = 'text/javascript';
 	ga.async = true;ga.src = 'https://ssl.google-analytics.com/ga.js';

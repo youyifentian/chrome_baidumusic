@@ -6,7 +6,7 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *@version:1.0.1
- *@最后修改时间:2013.08.14
+ *@最后修改时间:2013.08.16
  *
  ***************************************************************/
 //
@@ -141,7 +141,7 @@ function makeHtml(files,text){
 	for(var i=0;i<files.length;i++){
 		var file=files[i];
 		var url="http://music.baidu.com/data/music/file?link="+file.url;
-		html+='<span style="display:inline-block;margin-left:5px;min-width:190px;"><a href="'+url+'">'+file.ratetitle+'</a><span><strong>&nbsp;&nbsp;&nbsp;'+file.size+'</strong></span><span style="color:#999999;">&nbsp;&nbsp;&nbsp;'+file.format+'&nbsp;&nbsp;'+file.rate+'kbps</span></span>';
+		html+='<span style="display:inline-block;margin-left:5px;min-width:190px;"><a style="text-decoration:underline;" href="'+url+'">'+file.ratetitle+'</a><span><strong>&nbsp;&nbsp;&nbsp;'+file.size+'</strong></span><span style="color:#999999;">&nbsp;&nbsp;&nbsp;'+file.format+'&nbsp;&nbsp;'+file.rate+'kbps</span></span>';
 		if(i==1 || i==3)html+='</div><div>';
 	}
 	html+='</div></div>';
