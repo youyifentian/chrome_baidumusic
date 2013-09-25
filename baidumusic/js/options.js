@@ -6,13 +6,13 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *
- *@最后修改时间:2013.08.16
+ *@最后修改时间:2013.09.24
  *
  ***************************************************************/
 function $O(id) {return document.getElementById(id);}
 var info=$O("updateimg"),version=localStorage["version"];
-$O("opttitle").innerText="百度音乐助手 "+version;
-info.src="http://duoluohua.com/myapp/update?system=chrome&appname=baidumusic&apppot=contentjs&frompot=options&type=1&version="+version+"&t="+Math.random();
+$O("opttitle").innerText="\u767e\u5ea6\u97f3\u4e50\u52a9\u624b "+version;
+info.src="http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=contentjs&frompot=options&type=1&version="+version+"&t="+Math.random();
 info.onload=function(){
 	info.previousSibling.style.display="none";
 	info.style.display="inline-block";

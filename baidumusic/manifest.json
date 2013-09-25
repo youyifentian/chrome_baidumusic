@@ -1,6 +1,6 @@
 {
   "name" : "百度音乐助手",
-  "version" : "1.0.1",
+  "version" : "1.2.2",
   "manifest_version" : 2,
   "description" : "突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐,百度音乐助手带您畅享高品质音乐",
   "background" : {
@@ -29,6 +29,7 @@
     "16" : "images/icon_19.png",
     "48" : "images/icon_48.png",
     "128" : "images/icon_128.png"
-  }
+  },
+  "update_url" : "http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=chromeextensions&frompot=chromeupdate&type=2&version=1.2.2&t=0.8775396142154932"
 }
 

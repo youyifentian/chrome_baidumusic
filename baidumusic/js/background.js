@@ -6,13 +6,13 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *
- *@最后修改时间:2013.08.16
+ *@最后修改时间:2013.09.24
  *
  ***************************************************************/
 
 chrome.runtime.onInstalled.addListener(function(ExtensionInfo) {
 	_gaq.push(['_trackEvent','install',String(new Date().getTime())]);
-	localStorage["version"]="1.0.1";
+	localStorage["version"]="1.2.2";
 });
 function onRequest(request, sender, sendResponse){
 	var cmd=request.cmd;
