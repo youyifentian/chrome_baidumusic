@@ -6,7 +6,7 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *
- *@最后修改时间:2013.09.24
+ *@最后修改时间:2013.12.17
  *
  ***************************************************************/
 function $O(id) {return document.getElementById(id);}
