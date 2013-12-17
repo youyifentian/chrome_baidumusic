@@ -1,6 +1,6 @@
 {
   "name" : "百度音乐助手",
-  "version" : "1.2.4",
+  "version" : "1.2.5",
   "manifest_version" : 2,
   "description" : "突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐,百度音乐助手带您畅享高品质音乐",
   "background" : {
@@ -20,7 +20,15 @@
         "https://ting.baidu.com/song/*",
         "https://music.baidu.com/song/*"
       ],
-      "js" : ["js/baiduJquery.js","js/musicdownload.js"],
+      "js" : ["js/myjquerymin.js","js/musicdownload.js"],
+      "run_at" : "document_end"
+    },
+    {
+      "matches" : [
+        "http://y.baidu.com/*",
+        "https://y.baidu.com/*"
+      ],
+      "js" : ["js/myjquerymin.js","js/baidumusicy.js"],
       "run_at" : "document_end"
     }
   ],
@@ -30,6 +38,6 @@
     "48" : "images/icon_48.png",
     "128" : "images/icon_128.png"
   },
-  "update_url" : "http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=chromeextensions&frompot=chromeupdate&type=2&version=1.2.4&t=0.8775396142154932"
+  "update_url" : "http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=chromeextensions&frompot=chromeupdate&type=2&version=1.2.5&t=0.8775396142154932"
 }
 

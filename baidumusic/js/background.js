@@ -12,7 +12,7 @@
 
 chrome.runtime.onInstalled.addListener(function(ExtensionInfo) {
 	_gaq.push(['_trackEvent','install',String(new Date().getTime())]);
-	localStorage["version"]="1.2.4";
+	localStorage["version"]="1.2.5";
 });
 function onRequest(request, sender, sendResponse){
 	var cmd=request.cmd,version=localStorage["version"];

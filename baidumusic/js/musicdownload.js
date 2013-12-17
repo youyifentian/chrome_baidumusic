@@ -5,14 +5,14 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@version:1.2.3
+ *@version:1.2.5
  *@最后修改时间:2013.12.17
  *
  ***************************************************************/
 
 
 var APPNAME='百度音乐助手';
-var VERSION='1.2.4';
+var VERSION='1.2.5';
 var t=Math.random();
 
 (function(){
