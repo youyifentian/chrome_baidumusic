@@ -12,14 +12,14 @@
 
 chrome.runtime.onInstalled.addListener(function(ExtensionInfo) {
 	_gaq.push(['_trackEvent','install',String(new Date().getTime())]);
-	localStorage["version"]="1.2.5";
+	localStorage["version"]=RESCONFIG['version'];
 });
 function onRequest(request, sender, sendResponse){
-	var cmd=request.cmd,version=localStorage["version"];
+	var cmd=request.cmd;
 	if("analytics"==cmd){
-		_gaq.push(['_trackEvent','querysongs',String(version)]);
+		_gaq.push(['_trackEvent','querysongs',String(RESCONFIG['version'])]);
 	}else if("options"==cmd){
-		_gaq.push(['_trackEvent','options',String(version)]);
+		_gaq.push(['_trackEvent','options',String(RESCONFIG['version'])]);
 	}
 }
 //注册后台监听函数

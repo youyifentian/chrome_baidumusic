@@ -5,16 +5,13 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@version:1.2.5
- *@最后修改时间:2013.12.17
+ *@最后修改时间:2013.12.18
  *
  ***************************************************************/
 
 
-var APPNAME='百度音乐助手';
-var VERSION='1.2.5';
-var t=Math.random();
 
+var t=Math.random();
 (function(){
 	var filesInfo={},albumImgCache=[],albumImgIndex=0,songInfo=getSongInfo();
     querySong(songInfo);
@@ -103,7 +100,7 @@ var t=Math.random();
 			'您的油猴子扩展暂时不支持该脚本,请更新扩展或脚本到最新版本'
 		],text=msg[index],html=makeHtml(filesInfo,text,index-1);
 		node.innerHTML=html;
-		node.title=APPNAME;
+		node.title=RESCONFIG['appname'];
 		checkUpdate();
         if(opt){
             $(node).find('a#showalbumimg').click(function(){
@@ -137,7 +134,11 @@ var t=Math.random();
     function showAlbumImg(){
         var url='http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid='+songInfo['id'],
         httpHwnd=null,mousePosition=0,albumImgKey=['pic_small','pic_big','pic_premium','pic_huge','pic_radio'],
-        modal= new $.modal({show: true}),box=$('<div/>').css({
+        imgres=[
+            'http://static.tieba.baidu.com/tb/static-album/img/mouseleft.cur',//RESCONFIG['imgres'][2]
+            'http://static.tieba.baidu.com/tb/static-album/img/mouseright.cur',//RESCONFIG['imgres'][3]
+            RESCONFIG['imgres'][0]
+        ],modal= new $.modal({show: true}),box=$('<div/>').css({
             "left":"50%",
             "top":"50%",
             "position":"absolute",
@@ -150,7 +151,7 @@ var t=Math.random();
             modal.remove();
             box.remove();
         },
-        loadingImg=$('<img src="http://tieba.baidu.com/tb/img/loading.gif"/>').css({
+        loadingImg=$('<img src="'+imgres[2]+'"/>').css({
             "height":"32px",
             "width":"32px",
             "margin-left":"-16px",
@@ -171,13 +172,8 @@ var t=Math.random();
                     "box-shadow":"0 0 15px rgba(127, 173, 220, 0.8), 0 0 15px #7FADDC inset"
                 }).mousemove(function(e){
                     var i = o.offset();
-                    if (e.pageX - i.left < w / 2) {
-                        mousePosition=0;
-                        o.css({"cursor":"url(\"http://static.tieba.baidu.com/tb/static-album/img/mouseleft.cur\"), pointer"});
-                    } else {
-                        mousePosition=1;
-                        o.css({"cursor":"url(\"http://static.tieba.baidu.com/tb/static-album/img/mouseright.cur\"), pointer"});
-                    }
+                    mousePosition=(e.pageX - i.left < w / 2) ? 0 : 1;
+                    o.css({"cursor":'url("'+imgres[mousePosition]+'"), pointer'});
                 }).mouseout(function(){
                     o.css({"cursor":"pointer"});
                 }).click(function(event){
@@ -252,10 +248,10 @@ function checkUpdate(){
 	loadJs(js);
 }
 function getUpdateUrl(action,type){
-	return 'http://app.duoluohua.com/update?action='+action+'&system=chrome&appname=baidumusic&apppot=contentjs&frompot=songweb&type='+type+'&version='+VERSION+'&t='+t;
+	return 'http://app.duoluohua.com/update?action='+action+'&system=chrome&appname=baidumusic&apppot=contentjs&frompot=songweb&type='+type+'&version='+RESCONFIG['version']+'&t='+t;
 }
 function loadJs(js){
-	var oHead=document.getElementsByTagName('HEAD')[0],
+	var oHead=document.getElementsByTagName('head')[0],
 	    oScript= document.createElement("script"); 
 	oScript.type = "text/javascript"; 
 	oScript.text =js;

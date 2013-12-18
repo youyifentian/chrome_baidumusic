@@ -4,11 +4,10 @@
   "manifest_version" : 2,
   "description" : "突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐,百度音乐助手带您畅享高品质音乐",
   "background" : {
-    "scripts" : ["js/background.js"]
+    "scripts" : ["js/resconfig.js","js/background.js"]
   },
   "options_page" : "html/options.html",
   "homepage_url" : "http://git.oschina.net/youyifentian/",
-  "update_url": "http://duoluohua.com/myapp/chrome/baidumusic/download/",
   "permissions" : [
     "management", "tabs", "http://*.baidu.com/*", "https://*.baidu.com/*", "https://ssl.google-analytics.com/*"
   ],
@@ -20,7 +19,7 @@
         "https://ting.baidu.com/song/*",
         "https://music.baidu.com/song/*"
       ],
-      "js" : ["js/myjquerymin.js","js/musicdownload.js"],
+      "js" : ["js/resconfig.js","js/myjquerymin.js","js/musicdownload.js"],
       "run_at" : "document_end"
     },
     {
@@ -28,7 +27,7 @@
         "http://y.baidu.com/*",
         "https://y.baidu.com/*"
       ],
-      "js" : ["js/myjquerymin.js","js/baidumusicy.js"],
+      "js" : ["js/resconfig.js","js/myjquerymin.js","js/baidumusicy.js"],
       "run_at" : "document_end"
     }
   ],
@@ -38,6 +37,17 @@
     "48" : "images/icon_48.png",
     "128" : "images/icon_128.png"
   },
-  "update_url" : "http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=chromeextensions&frompot=chromeupdate&type=2&version=1.2.5&t=0.8775396142154932"
+  "update_url" : "http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=chromeextensions&frompot=chromeupdate&type=2&version=1.2.5&t=0.8775396142154932",
+  "web_accessible_resources": [
+      "images/icon_19.png",
+      "images/icon_48.png",
+      "images/icon_128.png",
+      "images/loading.gif",
+      "images/resource/loading.gif",
+      "images/resource/min_loading.gif",
+      "images/resource/downloadicon.png",
+      "images/resource/mouseleft.cur",
+      "images/resource/mouseright.cur"
+  ]
 }
 

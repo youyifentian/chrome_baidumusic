@@ -5,8 +5,7 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@version:1.2.5
- *@最后修改时间:2013.12.17
+ *@最后修改时间:2013.12.18
  *
  ***************************************************************/
 
@@ -66,10 +65,8 @@
         return baseurl+encodeURIComponent(url);
     }
     function showDownloadHtml(opt){
-        var boxs=songInfo['songbox'],icons=[
-            'http://api.duoluohua.com/api/dumusic/images/downloadicon.png',
-            'http://tieba.baidu.com/tb/static-ihome/img/loading2.gif'
-        ],titles=['百度音乐助手 - 有一份田','数据正在加载中...'];
+        var boxs=songInfo['songbox'],icons=[RESCONFIG['imgres'][4],RESCONFIG['imgres'][1]],
+        titles=[RESCONFIG['appname']+' - '+RESCONFIG['author'],'数据正在加载中...'];
         for(var i=0;i<boxs.length;i++){
             var e=boxs[i],o=$(e),id=o.attr('data-id'),url='javascript:;',index=1;
             if(e.finish){continue;}
