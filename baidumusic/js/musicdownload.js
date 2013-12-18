@@ -169,7 +169,7 @@ var t=Math.random();
                     "margin-left":"-"+w/2+"px",
                     "margin-top":"-"+h/2+"px",
                     "border-radius":"3px",
-                    "box-shadow":"0 0 15px rgba(127, 173, 220, 0.8), 0 0 15px #7FADDC inset"
+                    "box-shadow":"0 0 10px rgba(127, 173, 220, 0.8), 0 0 10px #7FADDC inset"
                 }).mousemove(function(e){
                     var i = o.offset();
                     mousePosition=(e.pageX - i.left < w / 2) ? 0 : 1;
