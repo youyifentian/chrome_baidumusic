@@ -15,8 +15,6 @@
     {
       "matches" : [
         "http://music.baidu.com/song/*",
-        "http://ting.baidu.com/song/*",
-        "https://ting.baidu.com/song/*",
         "https://music.baidu.com/song/*"
       ],
       "js" : ["js/myjquerymin.js","js/resconfig.js","js/musicdownload.js"],

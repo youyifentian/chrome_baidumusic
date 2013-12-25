@@ -29,4 +29,26 @@ var APPCFG={
 function isUrl(url) {
     return /^(http|https):\/\/([\w-]+(:[\w-]+)?@)?[\w-]+(\.[\w-]+)+(:[\d]+)?([#\/\?][^\s<>;"\']*)?$/.test(url);
 }
+function httpRequest(o){
+    var url=o.url,data=o.data,method=o.method || 'GET',
+    success=o.onload,error=o.onerror,xhr=new XMLHttpRequest();
+    xhr.open(method,url,true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.onreadystatechange=function(){
+		if(4==xhr.readyState){
+			if(200==xhr.status){
+				if(success){success(JSON.parse(xhr.responseText));}
+			}else{
+				if(fail){fail();}
+			}
+			
+		}
+	}
+    if(data || method=='POST'){
+	    xhr.send(data);
+    }else{
+        xhr.send();
+    }
+    return xhr;
+}
 

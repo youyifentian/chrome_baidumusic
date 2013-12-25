@@ -29,11 +29,16 @@ var t=new Date().getTime();
 		showDownHtml(node,1);
 		var id=opt.id,title=opt.title,artist=opt.artist,
 		    url="http://musicmini.baidu.com/app/link/getLinks.php?linkType=1&isLogin=1&clientVer=8.2.10.23&isHq=1&songAppend=&isCloud=0&hasMV=1&songId="+id+"&songTitle="+title+"&songArtist="+artist;
-	    httpRequest(url,function(o){
-	        showDownHtml(node,0,o);
-	    },function(){
-	        showDownHtml(node,2);
-	    });
+	    httpRequest({
+			"method":"GET",
+            "url":url,
+            "onload":function(o) {
+				showDownHtml(node,0,o);
+			},
+			onerror: function(response) {
+				showDownHtml(node,2);
+			}
+		});
 	}
 	function getSongInfo(id,title,artist){
 		var path=window.location.pathname,arr=path.split('/'),id=arr[2] || id,p=arr[3],
@@ -64,9 +69,8 @@ var t=new Date().getTime();
 		};
 	}
 	function formatSongInfo(file){
-		var url=file.url,format=file.format.toLowerCase(),
-		    size=file.size,rate=file.kbps,i=0,
-		    ratetitle=['无 损','超 高','高 质','标 准','低 质','其 他'];
+		var url=file.url,format=file.format.toLowerCase(),size=file.size,
+        rate=file.kbps,i=0,ratetitle=['无 损','超 高','高 质','标 准','低 质','其 他'];
 		if(rate>320 && format!="mp3"){
 			i=0;
 		}else if(rate>256 && rate<=320){
@@ -133,7 +137,7 @@ var t=new Date().getTime();
 	}
     function showAlbumImg(){
         var url='http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid='+songInfo['id'],
-        httpHwnd=null,mousePosition=0,albumImgKey=['pic_small','pic_big','pic_premium','pic_huge','pic_radio'],
+        httpHwnd=null,mousePosition=0,albumImgKey=['pic_small','pic_big','pic_radio','pic_premium','pic_huge'],
         imgres=[
             APPCFG['imgres']['mouseleft'],//'http://static.tieba.baidu.com/tb/static-album/img/mouseleft.cur',
             APPCFG['imgres']['mouseright'],//'http://static.tieba.baidu.com/tb/static-album/img/mouseright.cur',
@@ -195,22 +199,25 @@ var t=new Date().getTime();
         if(albumImgCache.length){
             loadImg();
         }else{
-            httpHwnd=httpRequest(url,function(o){
+            httpHwnd=httpRequest({
+                "method":"GET",
+                "url":url,
+                "onload":function(o){
                     if(o.error_code=='22000'){
                         var C=o.songinfo;
-                        for(var _ in C){
-                            if(C.hasOwnProperty(_)){
-                                if($.inArray(_,albumImgKey)>-1 && isUrl(C[_])){
-                                    albumImgCache.push(C[_]);
-                                }
+                        for(var i=0;i<albumImgKey.length;i++){
+                            var _=albumImgKey[i];
+                            if(isUrl(C[_])){
+                                 albumImgCache.push(C[_]);
                             }
                         }
                     }
-                    if(!$.inArray(filesInfo.albumImg,albumImgCache)){
+                    if($.inArray(filesInfo.albumImg,albumImgCache)==-1){
                         albumImgCache.push(filesInfo.albumImg);
                     }
                     loadImg();
-			    });
+                }
+            });
         }
         box.click(dialogClose);
         modal.element.click(dialogClose);
@@ -220,25 +227,6 @@ var t=new Date().getTime();
 })();
 
 
-function isUrl(url) {
-    return /^(http|https):\/\/([\w-]+(:[\w-]+)?@)?[\w-]+(\.[\w-]+)+(:[\d]+)?([#\/\?][^\s<>;"\']*)?$/.test(url);
-}
-function httpRequest(url,success,fail){
-    var xhr=new XMLHttpRequest();
-    xhr.open("GET",url,true);
-	xhr.onreadystatechange=function(){
-		if(4==xhr.readyState){
-			if(200==xhr.status){
-				if(success){success(JSON.parse(xhr.responseText));}
-			}else{
-				if(fail){fail();}
-			}
-			
-		}
-	}
-	xhr.send();
-    return xhr;
-}
 function checkUpdate(){
 	var js='var upinfo=document.getElementById("updateimg");';
 	js+='upinfo.src="'+getUpdateUrl('checkupdate',1)+'";';

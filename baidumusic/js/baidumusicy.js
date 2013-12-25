@@ -49,9 +49,14 @@
     function querySong(opt){
         showDownloadHtml();
         var url='http://y.baidu.com/data/songlink',data='songIds='+encodeURIComponent(opt.songids.join(','));
-        httpRequest(url,data,function(o) {
-            if(o['errorCode']=='22000'){
-                showDownloadHtml(o['songs']);
+        httpRequest({
+            "method":"POST",
+            "url":url,
+            "data":data,
+            "onload":function(o){
+                if(o['errorCode']=='22000'){
+                    showDownloadHtml(o['songs']);
+                }
             }
         });
     }
@@ -80,21 +85,4 @@
     }
 })();
 
-function httpRequest(url,data,success,fail){
-    var xhr=new XMLHttpRequest();
-    xhr.open("POST",url,true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.onreadystatechange=function(){
-		if(4==xhr.readyState){
-			if(200==xhr.status){
-				if(success){success(JSON.parse(xhr.responseText));}
-			}else{
-				if(fail){fail();}
-			}
-			
-		}
-	}
-	xhr.send(data);
-    return xhr;
-}
 chrome.extension.sendRequest({"cmd":"analytics"},function(response){});
