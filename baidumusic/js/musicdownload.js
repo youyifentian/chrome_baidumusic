@@ -5,13 +5,13 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@最后修改时间:2013.12.18
+ *@最后修改时间:2013.12.25
  *
  ***************************************************************/
 
 
 
-var t=Math.random();
+var t=new Date().getTime();
 (function(){
 	var filesInfo={},albumImgCache=[],albumImgIndex=0,songInfo=getSongInfo();
     querySong(songInfo);
@@ -100,7 +100,7 @@ var t=Math.random();
 			'您的油猴子扩展暂时不支持该脚本,请更新扩展或脚本到最新版本'
 		],text=msg[index],html=makeHtml(filesInfo,text,index-1);
 		node.innerHTML=html;
-		node.title=RESCONFIG['appname'];
+		node.title=APPCFG['appname'];
 		checkUpdate();
         if(opt){
             $(node).find('a#showalbumimg').click(function(){
@@ -135,9 +135,9 @@ var t=Math.random();
         var url='http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid='+songInfo['id'],
         httpHwnd=null,mousePosition=0,albumImgKey=['pic_small','pic_big','pic_premium','pic_huge','pic_radio'],
         imgres=[
-            'http://static.tieba.baidu.com/tb/static-album/img/mouseleft.cur',//RESCONFIG['imgres'][2]
-            'http://static.tieba.baidu.com/tb/static-album/img/mouseright.cur',//RESCONFIG['imgres'][3]
-            RESCONFIG['imgres'][0]
+            APPCFG['imgres']['mouseleft'],//'http://static.tieba.baidu.com/tb/static-album/img/mouseleft.cur',
+            APPCFG['imgres']['mouseright'],//'http://static.tieba.baidu.com/tb/static-album/img/mouseright.cur',
+            APPCFG['imgres']['loadingimg_1']//'http://tieba.baidu.com/tb/img/loading.gif'
         ],modal= new $.modal({show: true}),box=$('<div/>').css({
             "left":"50%",
             "top":"50%",
@@ -248,7 +248,7 @@ function checkUpdate(){
 	loadJs(js);
 }
 function getUpdateUrl(action,type){
-	return 'http://app.duoluohua.com/update?action='+action+'&system=chrome&appname=baidumusic&apppot=contentjs&frompot=songweb&type='+type+'&version='+RESCONFIG['version']+'&t='+t;
+	return 'http://app.duoluohua.com/update?action='+action+'&system=chrome&appname=baidumusic&apppot=contentjs&frompot=songweb&type='+type+'&version='+encodeURIComponent(APPCFG['version'])+'&t='+t;
 }
 function loadJs(js){
 	var oHead=document.getElementsByTagName('head')[0],

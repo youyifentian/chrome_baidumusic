@@ -6,20 +6,20 @@
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
  *
- *@最后修改时间:2013.12.18
+ *@最后修改时间:2013.12.25
  *
  ***************************************************************/
 
 chrome.runtime.onInstalled.addListener(function(ExtensionInfo) {
 	_gaq.push(['_trackEvent','install',String(new Date().getTime())]);
-	localStorage["version"]=RESCONFIG['version'];
+	localStorage["version"]=APPCFG['version'];
 });
 function onRequest(request, sender, sendResponse){
 	var cmd=request.cmd;
 	if("analytics"==cmd){
-		_gaq.push(['_trackEvent','querysongs',String(RESCONFIG['version'])]);
+		_gaq.push(['_trackEvent','querysongs',String(APPCFG['version'])]);
 	}else if("options"==cmd){
-		_gaq.push(['_trackEvent','options',String(RESCONFIG['version'])]);
+		_gaq.push(['_trackEvent','options',String(APPCFG['version'])]);
 	}
 }
 //注册后台监听函数

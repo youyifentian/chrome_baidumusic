@@ -19,7 +19,7 @@
         "https://ting.baidu.com/song/*",
         "https://music.baidu.com/song/*"
       ],
-      "js" : ["js/resconfig.js","js/myjquerymin.js","js/musicdownload.js"],
+      "js" : ["js/myjquerymin.js","js/resconfig.js","js/musicdownload.js"],
       "run_at" : "document_end"
     },
     {
@@ -27,7 +27,7 @@
         "http://y.baidu.com/*",
         "https://y.baidu.com/*"
       ],
-      "js" : ["js/resconfig.js","js/myjquerymin.js","js/baidumusicy.js"],
+      "js" : ["js/myjquerymin.js","js/resconfig.js","js/baidumusicy.js"],
       "run_at" : "document_end"
     }
   ],

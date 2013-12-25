@@ -10,8 +10,8 @@
  ***************************************************************/
 function $O(id) {return document.getElementById(id);}
 var info=$O("updateimg");
-$O("opttitle").innerText="\u767e\u5ea6\u97f3\u4e50\u52a9\u624b "+RESCONFIG['version'];
-info.src="http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=contentjs&frompot=options&type=1&version="+RESCONFIG['version']+"&t="+Math.random();
+$O("opttitle").innerText="\u767e\u5ea6\u97f3\u4e50\u52a9\u624b "+APPCFG['version'];
+info.src="http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=contentjs&frompot=options&type=1&version="+encodeURIComponent(APPCFG['version'])+"&t="+new Date().getTime();
 info.onload=function(){
 	info.previousSibling.style.display="none";
 	info.style.display="inline-block";
