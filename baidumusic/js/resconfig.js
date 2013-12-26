@@ -35,17 +35,16 @@ function httpRequest(o){
     xhr.open(method,url,true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.onreadystatechange=function(){
-		if(4==xhr.readyState){
-			if(200==xhr.status){
-				if(success){success(JSON.parse(xhr.responseText));}
-			}else{
-				if(fail){fail();}
-			}
-			
-		}
-	}
+        if(4==xhr.readyState){
+            if(200==xhr.status){
+            	if(success){success(JSON.parse(xhr.responseText));}
+            }else{
+            	if(fail){fail();}
+            }
+        }
+    }
     if(data || method=='POST'){
-	    xhr.send(data);
+        xhr.send(data);
     }else{
         xhr.send();
     }
