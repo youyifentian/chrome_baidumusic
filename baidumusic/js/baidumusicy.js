@@ -14,7 +14,7 @@
 (function(){
     var songInfo={"songids":[],"songbox":[]},domBox=[];
     $('#pageWrapper').bind('DOMNodeInserted',function(e){
-        var o=$(this).find('.widget-playlist');
+        var o=$(this).find('.playlist');
         if(o.length){
             var tmpBox=[];
             $.each(o,function(k,v){

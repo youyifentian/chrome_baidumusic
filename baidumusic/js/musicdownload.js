@@ -167,7 +167,7 @@ var t=new Date().getTime();
             img.onload=function(){
                 var h=img.height,w=img.width,o=$(img);
                 loadingImg.remove();
-                o.css({
+                o.attr('title',w+'x'+h).css({
                     "height":h+"px",
                     "width":w+"px",
                     "margin-left":"-"+w/2+"px",
@@ -232,7 +232,8 @@ function checkUpdate(){
     js+='upinfo.src="'+getUpdateUrl('checkupdate',1)+'";';
     js+='upinfo.onload=function(){';
     js+='upinfo.style.display="inline-block";';
-    js+='}';
+    js+='};';
+    js+='$(upinfo).parent("a").tooltip({str: \''+APPCFG['appname']+APPCFG['version']+' - <a href="http://www.duoluohua.com/download/"target="_blank">'+APPCFG['author']+'</a>\'}).tooltip("show");';
     loadJs(js);
 }
 function getUpdateUrl(action,type){
