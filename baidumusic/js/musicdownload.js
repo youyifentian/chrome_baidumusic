@@ -5,7 +5,7 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@最后修改时间:2013.12.25
+ *@最后修改时间:22014.03.16
  *
  ***************************************************************/
 
@@ -27,11 +27,17 @@ var t=new Date().getTime();
             o.parentNode.parentNode.parentNode.style.minWidth=opt['boxWidth'];
     	}catch(err){}
         showDownHtml(node,1);
-        var id=opt.id,title=opt.title,artist=opt.artist,
-        url="http://musicmini.baidu.com/app/link/getLinks.php?linkType=1&isLogin=1&clientVer=8.2.10.23&isHq=1&songAppend=&isCloud=0&hasMV=1&songId="+id+"&songTitle="+title+"&songArtist="+artist;
+        var data=getQueryData(opt);
         httpRequest({
-            "method":"GET",
-            "url":url,
+            "method":"POST",
+            "url":data.url,
+            "data":data.data,
+            "headers":{
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Host":"musicmini.baidu.com",
+                "Referer":"http://musicmini.baidu.com/",
+                "X-Requested-With":"XMLHttpRequest"
+            },
             "onload":function(o) {
             	showDownHtml(node,0,o);
             },
@@ -52,6 +58,24 @@ var t=new Date().getTime();
             "child": type ? "lastChild" : "firstChild",
             "boxWidth": type ? "670px" : ""
         };
+    }
+    function getQueryData(opt,rate){
+        var dataBase = {
+            "songId": opt.id || opt.song_id,
+            "songArtist": opt.artist || opt.song_artist,
+            "songTitle": opt.title || opt.song_title,
+            "songAppend": '',
+            "linkType": rate===undefined ? 1 : 2,
+            "isLogin": 1,
+            "clientVer": '',
+            "isHq": 1,
+            "isCloud": 0,
+            "hasMV": 1,
+            "noFlac": 0,
+            "rate": rate===undefined ? 0 : rate
+        };
+        var data = "param=" + encodeURIComponent((new BaseEncode()).encode(JSON.stringify(dataBase)));
+        return {"url":"http://musicmini.baidu.com/app/link/getLinks.php","data":data};
     }
     function setSongsInfo(opt){
         var o=opt[0],id=o.song_id,lyric=o.lyric_url,albumImg=o.album_image_url,
@@ -91,7 +115,7 @@ var t=new Date().getTime();
             "rate":rate,
             "ratetitle":ratetitle[i],
             "size":size,
-            "url":url
+            "url":isUrl(url) ? "http://music.baidu.com/data/music/file?link="+url : 'javascript:;'
         };
     }
     function showDownHtml(node,index,opt){
@@ -110,6 +134,10 @@ var t=new Date().getTime();
             $(node).find('a#showalbumimg').click(function(){
                 setTimeout(function(){showAlbumImg();},0);
             });
+            $(node).find('a.filelists').click(function(){
+                var _self=this;
+                setTimeout(function(){downloadDialog(_self,filesInfo);},0);
+            });
         }
     }
     function makeHtml(filesInfo,text,type){
@@ -121,9 +149,9 @@ var t=new Date().getTime();
         html+=text ? '<font color="'+(type ? '#FF0000' : '#A1CBE4')+'"><b>'+text+'...</b></font>' : '';
         for(var i=0;i<files.length;i++){
             file=files[i];
-            url="http://music.baidu.com/data/music/file?link="+file.url;
+            url=file.url;
             html+='<span style="display:inline-block;min-width:200px;">';
-            html+='<a style="text-decoration:underline;" href="'+url+'" title="'+file.ratetitle+'"><b>'+file.ratetitle+'</b></a>';
+            html+='<a style="text-decoration:underline;" class="filelists" filerate="'+file.rate+'" href="'+url+'" title="'+file.ratetitle+'"><b>'+file.ratetitle+'</b></a>';
             html+='<span><b>&nbsp;&nbsp;&nbsp;'+file.size+'</b></span>';
             html+='<span style="color:#999999;">&nbsp;&nbsp;&nbsp;'+file.format+'&nbsp;&nbsp;'+file.rate+'kbps</span>';
             html+='</span>';
@@ -134,6 +162,38 @@ var t=new Date().getTime();
         html+=lyric ? '<span><a style="text-decoration:underline;" href="'+lyric+'" title="下载歌词">LRC歌词</a></span>' : '';
         html+='</div></div>';
         return html;
+    }
+    function downloadDialog(o,opt){
+        if(isUrl(o.href))return;
+        var box=o.box || $('<div/>');
+        clearTimeout(o.hwnd);
+        box.css({
+            "color":"red",
+            "fontSize":"20pt",
+            "left":"50%",
+            "position":"fixed",
+            "top":"250px",
+            "z-index":$.getzIndex()
+        }).html('<b>数据获取中...</b>').appendTo("body");
+        o.hwnd=setTimeout(function(){box.remove();},500);
+        
+        var data=getQueryData(opt,$(o).attr('filerate'));
+        httpRequest({
+            "method":"POST",
+            "url":data.url,
+            "data":data.data,
+            "headers":{
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Host":"musicmini.baidu.com",
+                "Referer":"http://musicmini.baidu.com/",
+                "X-Requested-With":"XMLHttpRequest"
+            },            
+            "onload":function(obj) {
+                var fileinfo=setSongsInfo(obj),url=fileinfo.files[0].url;
+                window.location=url;
+                o.href=url;
+            }
+        });
     }
     function showAlbumImg(){
         var url='http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid='+songInfo['id'],
@@ -226,7 +286,7 @@ var t=new Date().getTime();
 
 })();
 
-
+function BaseEncode(){_keyStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",this.encode=function(a){var c,d,e,f,g,h,i,b="",j=0;for(a=_utf8_encode(a);j<a.length;)c=a.charCodeAt(j++),d=a.charCodeAt(j++),e=a.charCodeAt(j++),f=c>>2,g=(3&c)<<4|d>>4,h=(15&d)<<2|e>>6,i=63&e,isNaN(d)?h=i=64:isNaN(e)&&(i=64),b=b+_keyStr.charAt(f)+_keyStr.charAt(g)+_keyStr.charAt(h)+_keyStr.charAt(i);return b},_utf8_encode=function(a){var b,c,d;for(a=a.replace(/\r\n/g,"\n"),b="",c=0;c<a.length;c++)d=a.charCodeAt(c),128>d?b+=String.fromCharCode(d):d>127&&2048>d?(b+=String.fromCharCode(192|d>>6),b+=String.fromCharCode(128|63&d)):(b+=String.fromCharCode(224|d>>12),b+=String.fromCharCode(128|63&d>>6),b+=String.fromCharCode(128|63&d));return b}}
 function checkUpdate(){
     var js='var upinfo=document.getElementById("updateimg");';
     js+='upinfo.src="'+getUpdateUrl('checkupdate',1)+'";';
