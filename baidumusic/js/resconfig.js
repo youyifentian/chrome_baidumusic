@@ -1,7 +1,7 @@
 var APPCFG={
     "appname":"百度音乐助手",
     "author":"有一份田",
-    "version":"1.2.6",
+    "version":"1.2.7",
     "desc":"突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐,百度音乐助手带您畅享高品质音乐",
     "updateurl":"",
     "license":"GPL version 3",
@@ -30,10 +30,15 @@ function isUrl(url) {
     return /^(http|https):\/\/([\w-]+(:[\w-]+)?@)?[\w-]+(\.[\w-]+)+(:[\d]+)?([#\/\?][^\s<>;"\']*)?$/.test(url);
 }
 function httpRequest(o){
-    var url=o.url,data=o.data,method=o.method || 'GET',
+    var url=o.url,data=o.data,method=o.method || 'GET',headers=o.headers,
     success=o.onload,error=o.onerror,xhr=new XMLHttpRequest();
     xhr.open(method,url,true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    for(var i in headers){
+        if(headers.hasOwnProperty(i)){
+            try{xhr.setRequestHeader(i,headers[i]);}catch(e){}
+        }
+    }
 	xhr.onreadystatechange=function(){
         if(4==xhr.readyState){
             if(200==xhr.status){
