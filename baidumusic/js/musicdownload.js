@@ -5,7 +5,7 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@最后修改时间:22014.03.16
+ *@最后修改时间:22014.04.20
  *
  ***************************************************************/
 
@@ -136,7 +136,10 @@ var t=new Date().getTime();
             });
             $(node).find('a.filelists').click(function(){
                 var _self=this;
-                setTimeout(function(){downloadDialog(_self,filesInfo);},0);
+                setTimeout(function(){downloadDialog(_self,filesInfo,1);},0);
+            }).each(function(){
+                var _self=this;
+                setTimeout(function(){downloadDialog(_self,filesInfo,0);},0);
             });
         }
     }
@@ -163,20 +166,21 @@ var t=new Date().getTime();
         html+='</div></div>';
         return html;
     }
-    function downloadDialog(o,opt){
+    function downloadDialog(o,opt,type){
         if(isUrl(o.href))return;
-        var box=o.box || $('<div/>');
-        clearTimeout(o.hwnd);
-        box.css({
-            "color":"red",
-            "fontSize":"20pt",
-            "left":"50%",
-            "position":"fixed",
-            "top":"250px",
-            "z-index":$.getzIndex()
-        }).html('<b>数据获取中...</b>').appendTo("body");
-        o.hwnd=setTimeout(function(){box.remove();},500);
-        
+        if(type){
+            var box=o.box || $('<div/>');
+            clearTimeout(o.hwnd);
+            box.css({
+                "color":"red",
+                "fontSize":"20pt",
+                "left":"50%",
+                "position":"fixed",
+                "top":"250px",
+                "z-index":$.getzIndex()
+            }).html('<b>数据获取中...</b>').appendTo("body");
+            o.hwnd=setTimeout(function(){box.remove();},500);
+        }
         var data=getQueryData(opt,$(o).attr('filerate'));
         httpRequest({
             "method":"POST",
@@ -190,7 +194,7 @@ var t=new Date().getTime();
             },            
             "onload":function(obj) {
                 var fileinfo=setSongsInfo(obj),url=fileinfo.files[0].url;
-                window.location=url;
+                if(type){window.location=url;}
                 o.href=url;
             }
         });
