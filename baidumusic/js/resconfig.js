@@ -1,7 +1,11 @@
 var APPCFG={
     "appname":"百度音乐助手",
     "author":"有一份田",
+<<<<<<< HEAD
     "version":"1.2.8",
+=======
+    "version":"1.2.7",
+>>>>>>> fbea59f2d05353eddfdc1251c57477a3025a274d
     "desc":"突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐,百度音乐助手带您畅享高品质音乐",
     "updateurl":"",
     "license":"GPL version 3",

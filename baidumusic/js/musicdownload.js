@@ -5,7 +5,11 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
+<<<<<<< HEAD
  *@最后修改时间:22014.04.20
+=======
+ *@最后修改时间:22014.03.16
+>>>>>>> fbea59f2d05353eddfdc1251c57477a3025a274d
  *
  ***************************************************************/
 
@@ -136,10 +140,14 @@ var t=new Date().getTime();
             });
             $(node).find('a.filelists').click(function(){
                 var _self=this;
+<<<<<<< HEAD
                 setTimeout(function(){downloadDialog(_self,filesInfo,1);},0);
             }).each(function(){
                 var _self=this;
                 setTimeout(function(){downloadDialog(_self,filesInfo,0);},0);
+=======
+                setTimeout(function(){downloadDialog(_self,filesInfo);},0);
+>>>>>>> fbea59f2d05353eddfdc1251c57477a3025a274d
             });
         }
     }
@@ -166,6 +174,7 @@ var t=new Date().getTime();
         html+='</div></div>';
         return html;
     }
+<<<<<<< HEAD
     function downloadDialog(o,opt,type){
         if(isUrl(o.href))return;
         if(type){
@@ -181,6 +190,22 @@ var t=new Date().getTime();
             }).html('<b>数据获取中...</b>').appendTo("body");
             o.hwnd=setTimeout(function(){box.remove();},500);
         }
+=======
+    function downloadDialog(o,opt){
+        if(isUrl(o.href))return;
+        var box=o.box || $('<div/>');
+        clearTimeout(o.hwnd);
+        box.css({
+            "color":"red",
+            "fontSize":"20pt",
+            "left":"50%",
+            "position":"fixed",
+            "top":"250px",
+            "z-index":$.getzIndex()
+        }).html('<b>数据获取中...</b>').appendTo("body");
+        o.hwnd=setTimeout(function(){box.remove();},500);
+        
+>>>>>>> fbea59f2d05353eddfdc1251c57477a3025a274d
         var data=getQueryData(opt,$(o).attr('filerate'));
         httpRequest({
             "method":"POST",
@@ -194,7 +219,11 @@ var t=new Date().getTime();
             },            
             "onload":function(obj) {
                 var fileinfo=setSongsInfo(obj),url=fileinfo.files[0].url;
+<<<<<<< HEAD
                 if(type){window.location=url;}
+=======
+                window.location=url;
+>>>>>>> fbea59f2d05353eddfdc1251c57477a3025a274d
                 o.href=url;
             }
         });
