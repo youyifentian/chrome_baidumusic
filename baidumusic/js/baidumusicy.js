@@ -5,7 +5,7 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@最后修改时间:2013.12.25
+ *@最后修改时间:2014.05.15
  *
  ***************************************************************/
 
@@ -13,8 +13,9 @@
 
 (function(){
     var songInfo={"songids":[],"songbox":[]},domBox=[];
-    $('#pageWrapper').bind('DOMNodeInserted',function(e){
-        var o=$(this).find('.playlist');
+    //$('#pageWrapper').bind('DOMNodeInserted',function(e){
+    $('body').bind('DOMNodeInserted',function(e){
+        var o=$(this).find('.playlist[isset!=1]').attr('isset',1);
         if(o.length){
             var tmpBox=[];
             $.each(o,function(k,v){

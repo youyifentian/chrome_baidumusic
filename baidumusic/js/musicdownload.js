@@ -5,7 +5,7 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@最后修改时间:22014.04.20
+ *@最后修改时间:2014.05.15
  *
  ***************************************************************/
 
@@ -17,7 +17,7 @@ var t=new Date().getTime();
     querySong(songInfo);
     function querySong(opt){
     	if(!opt['id']) return;
-    	var box=document.getElementsByClassName(opt['boxCss']);
+    	var box=$(opt['boxCss']);
     	if(!box.length)return;
     	var node=document.createElement('div'),o=box[0];
     	node.innerHTML=makeHtml({},'');
@@ -53,7 +53,7 @@ var t=new Date().getTime();
             "id":"song"==arr[1].toLowerCase() ? id : "",
             "title":title || "",
             "artist":artist || "",
-            "boxCss": type ? "ul" : "info-holder",
+            "boxCss": type ? ".ul,.price" : ".info-holder",
             "addNodeFun":type ?  "appendChild" : "insertBefore",
             "child": type ? "lastChild" : "firstChild",
             "boxWidth": type ? "670px" : ""
