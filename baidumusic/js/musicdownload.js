@@ -5,7 +5,7 @@
  *@Email:youyifentian@gmail.com
  *@地址:http://git.oschina.net/youyifentian/
  *@转载重用请保留此信息.
- *@最后修改时间:2014.05.15
+ *@最后修改时间:2014.09.15
  *
  ***************************************************************/
 
@@ -17,15 +17,19 @@ var t=new Date().getTime();
     querySong(songInfo);
     function querySong(opt){
     	if(!opt['id']) return;
-    	var box=$(opt['boxCss']);
-    	if(!box.length)return;
-    	var node=document.createElement('div'),o=box[0];
-    	node.innerHTML=makeHtml({},'');
-    	node.style.display='block';
-    	o[opt['addNodeFun']](node,o[opt['child']]);
-    	try{
-            o.parentNode.parentNode.parentNode.style.minWidth=opt['boxWidth'];
-    	}catch(err){}
+        var boxsets=opt['boxsets'],boxset={},box=[];
+        for(var i=0,len=boxsets.length;i<len;i++){
+            boxset=boxsets[i];
+            box=$(boxset['css']);
+            if(box.length){break;}
+        }
+        if(!box.length)return;
+        var node=document.createElement('div'),o=box[0];
+        node.style.display='block';
+        o[boxset['fun']](node,o[boxset['child']]);
+        try{
+            o.parentNode.parentNode.parentNode.style.minWidth=boxset['width'];
+        }catch(err){}
         showDownHtml(node,1);
         var data=getQueryData(opt);
         httpRequest({
@@ -47,16 +51,15 @@ var t=new Date().getTime();
         });
     }
     function getSongInfo(id,title,artist){
-        var path=window.location.pathname,arr=path.split('/'),id=arr[2] || id,p=arr[3],
-        type=p && "download"==p.toLowerCase();
+        var path=window.location.pathname,arr=path.split('/'),id=arr[2] || id;
         return {
             "id":"song"==arr[1].toLowerCase() ? id : "",
             "title":title || "",
             "artist":artist || "",
-            "boxCss": type ? ".ul,.price" : ".info-holder",
-            "addNodeFun":type ?  "appendChild" : "insertBefore",
-            "child": type ? "lastChild" : "firstChild",
-            "boxWidth": type ? "670px" : ""
+            "boxsets":[
+                {"css":".info-holder","fun":"insertBefore","child":"firstChild","width":""},
+                {"css":".ul,.price,.info-wrap ul","fun":"appendChild","child":"lastChild","width":"670px"}
+            ]
         };
     }
     function getQueryData(opt,rate){
@@ -136,10 +139,10 @@ var t=new Date().getTime();
             });
             $(node).find('a.filelists').click(function(){
                 var _self=this;
-                setTimeout(function(){downloadDialog(_self,filesInfo,1);},0);
+                setTimeout(function(){downloadDialog(_self,filesInfo,node,1);},0);
             }).each(function(){
                 var _self=this;
-                setTimeout(function(){downloadDialog(_self,filesInfo,0);},0);
+                setTimeout(function(){downloadDialog(_self,filesInfo,node,0);},0);
             });
         }
     }
@@ -162,11 +165,11 @@ var t=new Date().getTime();
         }
         html+='</div><div>';
         html+=albumImg ? '<span style="margin-right:100px;"><a style="text-decoration:underline;" id="showalbumimg" href="javascript:;" title="专辑封面">专辑封面</a></span>' : '';
-        html+=lyric ? '<span><a style="text-decoration:underline;" href="'+lyric+'" title="下载歌词">LRC歌词</a></span>' : '';
+        html+='<span><a style="text-decoration:underline;display:'+(isUrl(lyric) ? '' : 'none')+';" href="'+lyric+'" title="下载歌词" id="showlyric">LRC歌词</a></span>';
         html+='</div></div>';
         return html;
     }
-    function downloadDialog(o,opt,type){
+    function downloadDialog(o,opt,node,type){
         if(isUrl(o.href))return;
         if(type){
             var box=o.box || $('<div/>');
@@ -194,7 +197,10 @@ var t=new Date().getTime();
             },            
             "onload":function(obj) {
                 var fileinfo=setSongsInfo(obj),url=fileinfo.files[0].url;
-                if(type){window.location=url;}
+                var lyricbox=$(node).find('a#showlyric').css({"display":"none"}),lyric=lyricbox.attr('href');
+                if(type){unsafeWindow.location=url;}
+                lyric = isUrl(lyric) ? lyric : (fileinfo.lyric || 'javascript:;');
+                if(isUrl(lyric)){lyricbox.css({"display":""}).attr('href',lyric);}
                 o.href=url;
             }
         });
@@ -209,7 +215,7 @@ var t=new Date().getTime();
         ],modal= new $.modal({show: true}),box=$('<div/>').css({
             "left":"50%",
             "top":"50%",
-            "position":"absolute",
+            "position":"fixed",
             "min-height":"240px",
             "min-width":"240px",
             "z-index":$.getzIndex()
@@ -301,7 +307,7 @@ function checkUpdate(){
     loadJs(js);
 }
 function getUpdateUrl(action,type){
-    return 'http://app.duoluohua.com/update?action='+action+'&system=chrome&appname=baidumusic&apppot=contentjs&frompot=songweb&type='+type+'&version='+encodeURIComponent(APPCFG['version'])+'&t='+t;
+    return 'http://app.duoluohua.com/update?action='+action+'&system='+APPCFG['system']+'&appname='+APPCFG['name']+'&apppot=contentjs&frompot=songweb&type='+type+'&version='+encodeURIComponent(APPCFG['version'])+'&t='+t;
 }
 function loadJs(js){
     var oHead=document.getElementsByTagName('head')[0],

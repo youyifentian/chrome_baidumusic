@@ -11,7 +11,7 @@
 
 var info=$O("updateimg");
 $O("opttitle").innerText=APPCFG['appname']+" "+APPCFG['version'];
-info.src="http://app.duoluohua.com/update?action=checkupdate&system=chrome&appname=baidumusic&apppot=contentjs&frompot=options&type=1&version="+encodeURIComponent(APPCFG['version'])+"&t="+new Date().getTime();
+info.src="http://app.duoluohua.com/update?action=checkupdate&system="+APPCFG['system']+"&appname="+APPCFG['name']+"&apppot=contentjs&frompot=options&type=1&version="+encodeURIComponent(APPCFG['version'])+"&t="+new Date().getTime();
 info.onload=function(){
     info.previousSibling.style.display="none";
     info.style.display="inline-block";
