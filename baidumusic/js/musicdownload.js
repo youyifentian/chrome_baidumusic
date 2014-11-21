@@ -64,7 +64,7 @@ var t=new Date().getTime();
     }
     function getQueryData(opt,rate){
         var dataBase = {
-            "songId": opt.id || opt.song_id,
+            "songsId": opt.id || opt.song_id,
             "songArtist": opt.artist || opt.song_artist,
             "songTitle": opt.title || opt.song_title,
             "songAppend": '',

@@ -3,7 +3,7 @@ var APPCFG={
     "author":"有一份田",
     "name":"baidumusic",
     "system":"chrome",
-    "version":"1.3.0",
+    "version":"1.3.1",
     "desc":"突破百度音乐会员限制,突破百度账号限制,网页端直接下载高品质音乐,百度音乐助手带您畅享高品质音乐",
     "updateurl":"",
     "license":"GPL version 3",
